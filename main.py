@@ -188,7 +188,11 @@ def home():
             });
             const data = await r.json();
 
-            document.getElementById('res').textContent = data.respuesta;
+            const res = 
+            document.getElementById('res');
+            res.style.whiteSpace = 'pre-wrap';
+            res.style.wordBreak = 'break-word';
+            res.textContent = data.respuesta;
      }
         </script>
     </body>
