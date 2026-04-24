@@ -205,14 +205,14 @@ def chat(request: ChatRequest):
     }).execute()
 
 return {
-       "respuesta": f"""
+    "respuesta": f"""
 🧠 Respuesta:
 
 Analizando tu mensaje:
 "{request.message}"
 
 Respuesta estratégica:
-Entiendo que estás diciendo: "{request.message}". 
+Entiendo que estás diciendo: "{request.message}".
 Voy a darte una respuesta clara y útil basada en el contexto.
 
 Basado en internet:
@@ -221,5 +221,4 @@ Basado en internet:
 Conclusión:
 Si quieres, dame más detalles y te doy una respuesta más precisa.
 """
-}
-
+}  
