@@ -204,9 +204,8 @@ def chat(request: ChatRequest):
         "content": request.message
     }).execute()
 
-    
-        return {
-    "respuesta": f"""
+return {
+       "respuesta": f"""
 🧠 Respuesta:
 
 Analizando tu mensaje:
