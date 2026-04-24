@@ -18,12 +18,18 @@ def ia_real(mensaje):
     }
 
     data = {
-        "model": "llama-3.1-8b-instant",
-        "messages": [
-            {"role": "system", "content": "Eres Ámatis IA"},
-            {"role": "user", "content": mensaje}
-        ]
-    }
+    "model": "llama-3.1-8b-instant",
+    "messages": [
+        {
+            "role": "system",
+            "content": "Eres Ámatis IA, un asistente experto en negocios y algunas ciencias. Respondes de forma directa, estratégica y sin rodeos. Ayudas a tomar decisiones rápidas, detectar oportunidades."
+        },
+        {
+            "role": "user",
+            "content": mensaje
+        }
+    ]
+}
 
     try:
         response = requests.post(url, headers=headers, json=data)
