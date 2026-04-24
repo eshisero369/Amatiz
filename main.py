@@ -1,3 +1,4 @@
+from fastapi.responses import HTMLResponse
 from supabase_client import supabase
 import json
 from pathlib import Path
@@ -79,10 +80,9 @@ Mi recomendación inicial es ordenar la idea, separar lo importante de lo secund
 
     return response.strip()
 
-
-@app.get("/")
+@app.get("/",response_class=HTMLResponse)
 def home():
-    return """
+    return HTMLResponse(content="""
     <html>
     <body style='font-family:Arial; max-width:600px; margin:40px auto;'>
         <h1>Ámatis IA</h1>
@@ -105,7 +105,7 @@ def home():
         </script>
     </body>
     </html>
-    """
+    """)
 
 
 @app.post("/chat")
