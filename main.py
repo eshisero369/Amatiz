@@ -57,15 +57,16 @@ try:
             texto = respuesta["choices"][0]["message"]["content"]
 
             supabase.table("chat_history").insert({
-        "user_id": user_id,
-        "role": "assistant",
-        "content": texto
-    }).execute()
+                "user_id": user_id,
+                "role": "assistant",
+                "content": texto
+            }).execute()
 
             return texto
-         else:
-            return f"Error IA: {respuesta}"
 
+        else:
+            return f"Error IA: {respuesta}"
+            
 except Exception as e:
         return f"Error técnico: {str(e)}"
         
