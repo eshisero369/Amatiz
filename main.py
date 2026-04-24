@@ -24,7 +24,7 @@ def buscar_en_internet(query):
 
         resultados = ""
         for r in data.get("results", []):
-            resultados += f"- {r.get('title')}: {r.get('content')}\n\n"
+            resultados += f"🔎 {r.get('title')}\n{r.get('content')[:300]}...\n\n"
 
         if resultados == "":
             return "No encontré información en internet."
