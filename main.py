@@ -54,18 +54,19 @@ try:
         respuesta = response.json()
 
         if "choices" in respuesta:
-            texto = respuesta["choices"][0]["message"]["content"]
+        if "choices" in respuesta:
+    texto = respuesta["choices"][0]["message"]["content"]
 
-            supabase.table("chat_history").insert({
-                "user_id": user_id,
-                "role": "assistant",
-                "content": texto
-            }).execute()
+    supabase.table("chat_history").insert({
+        "user_id": user_id,
+        "role": "assistant",
+        "content": texto
+    }).execute()
 
-            return texto
+    return texto
 
-        else:
-            return f"Error IA: {respuesta}"
+else:
+    return f"Error IA: {respuesta}"
             
 except Exception as e:
         return f"Error técnico: {str(e)}"
