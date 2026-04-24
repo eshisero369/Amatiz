@@ -58,7 +58,7 @@ try:
         else:
             return f"Error IA: {respuesta}"
 
-    except Exception as e:
+except Exception as e:
         return f"Error técnico: {str(e)}"
         
 TAVILY_API_KEY = os.getenv ("TAVILY_API_KEY")
@@ -85,8 +85,8 @@ def buscar_en_internet(query):
 
         return resultados
 
-    except Exception:
-        return "No pude buscar en internet en este momento."
+    except Exception as e:
+        return f"No pude buscar en internet: {str(e)}"
         
 app = FastAPI(title="Ámatis IA")
 
