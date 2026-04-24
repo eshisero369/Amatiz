@@ -34,11 +34,11 @@ def ia_real(mensaje):
     respuesta = response.json()
 
     if "choices" in respuesta:
-    return respuesta["choices"][0]["message"]["content"]
-else:
-    return "Error al obtener respuesta de la IA"
+        return respuesta["choices"][0]["message"]["content"]
+    else:
+        return "Error al obtener respuesta de la IA"
 
-TAVILY_API_KEY = os.getenv ("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")
+TAVILY_API_KEY = os.getenv ("TAVILY_API_KEY")
 def buscar_en_internet(query):
     url = "https://api.tavily.com/search"
 
