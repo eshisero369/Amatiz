@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-def ia_real(mensaje):
+def ia_real(user_id, mensaje):
     url = "https://api.groq.com/openai/v1/chat/completions"
 
     headers = {
@@ -17,19 +17,34 @@ def ia_real(mensaje):
         "Content-Type": "application/json"
     }
 
-    data = {
+supabase.table("chat_history").insert({
+    "user_id": user_id,
+    "role": "user",
+    "content": mensaje
+}).execute()
+
+    # Obtener historial desde Supabase
+response = supabase.table("chat_history") \
+    .select("role, content") \
+    .eq("user_id", user_id) \
+    .order("created_at") \
+    .execute()
+
+historial = response.data
+
+# Armar mensajes con memoria
+messages = [
+    {
+        "role": "system",
+        "content": "Eres Ámatis IA, experto en negocios, ventas e inmobiliaria."
+    }
+] + historial
+
+data = {
     "model": "llama-3.1-8b-instant",
-    "messages": [
-        {
-            "role": "system",
-            "content": "Eres Ámatis IA, un asistente experto en negocios y algunas ciencias. Respondes de forma directa, estratégica y sin rodeos. Ayudas a tomar decisiones rápidas, detectar oportunidades."
-        },
-        {
-            "role": "user",
-            "content": mensaje
-        }
-    ]
+    "messages": messages
 }
+
 
     try:
         response = requests.post(url, headers=headers, json=data)
@@ -240,7 +255,7 @@ def home():
 
 @app.post("/chat")
 def chat(request: ChatRequest):
-    respuesta_ia = ia_real(request.message)
+    respuesta_ia = ia_real(request.user, request.message)
 
     supabase.table("Memory").insert({
         "user": request.user,
