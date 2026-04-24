@@ -82,10 +82,30 @@ Mi recomendación inicial es ordenar la idea, separar lo importante de lo secund
 
 @app.get("/")
 def home():
-    return {
-        "status": "online",
-        "message": "Ámatis está activa en Render."
-    }
+    return """
+    <html>
+    <body style='font-family:Arial; max-width:600px; margin:40px auto;'>
+        <h1>Ámatis IA</h1>
+        <textarea id='msg' style='width:100%; height:100px;' placeholder='Escribe tu mensaje...'></textarea>
+        <br><br>
+        <button onclick='send()'>Enviar</button>
+        <pre id='res'></pre>
+
+        <script>
+        async function send() {
+            const message = document.getElementById('msg').value;
+            const r = await fetch('/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: message, user: 'Carlos Iván'})
+            });
+            const data = await r.json();
+            document.getElementById('res').textContent = JSON.stringify(data, null, 2);
+        }
+        </script>
+    </body>
+    </html>
+    """
 
 
 @app.post("/chat")
