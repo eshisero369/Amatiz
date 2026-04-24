@@ -194,15 +194,17 @@ def home():
     </html>
     """)
 
-
 @app.post("/chat")
 def chat(request: ChatRequest):
-
-    # 1. Buscar en internet
     info_internet = buscar_en_internet(request.message)
 
-    # 2. Crear respuesta inteligente
-    respuesta = f"""
+    supabase.table("Memory").insert({
+        "user": request.user,
+        "content": request.message
+    }).execute()
+
+    return {
+        "respuesta": f"""
 🧠 Respuesta:
 
 Basado en internet:
@@ -212,39 +214,4 @@ Basado en internet:
 Conclusión:
 Te doy una respuesta clara y útil basada en lo encontrado.
 """
-
-    # 3. Guardar en memoria (opcional)
-    supabase.table("Memory").insert({
-        "user": request.user,
-        "content": request.message
-    }).execute()
-
-    # 4. DEVOLVER RESPUESTA (esto es lo más importante)
-    return {
-        "respuesta": respuesta
-    }
-    supabase.table("Memory").insert({
-        "user": request.user,
-        "content": request.message
-}).execute()
-
-    config = load_config()
-    memory = load_memory()
-
-    if should_remember(request.message):
-        memory["memories"].append({
-            "user": request.user,
-            "content": request.message,
-            "created_at": datetime.now().isoformat(),
-            "importance": "medium"
-        })
-        save_memory(memory)
-
-    response = create_response(request.message, config, memory)
-
-    return {
-        "ia": config.get("ia_name", "Ámatis"),
-        "user": request.user,
-        "response": response,
-        "memory_saved": should_remember(request.message)
 }
