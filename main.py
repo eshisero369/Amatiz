@@ -53,7 +53,7 @@ try:
 
         respuesta = response.json()
 
-        if "choices" in respuesta:
+if "choices" in respuesta:
     texto = respuesta["choices"][0]["message"]["content"]
 
     supabase.table("chat_history").insert({
@@ -65,9 +65,9 @@ try:
     return texto
 
 else:
-    return f"Error IA: {respuesta}"
+        return f"Error IA: {respuesta}"
             
-except Exception as e:
+  except Exception as e:
         return f"Error técnico: {str(e)}"
         
 TAVILY_API_KEY = os.getenv ("TAVILY_API_KEY")
