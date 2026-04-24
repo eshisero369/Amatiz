@@ -1,3 +1,5 @@
+import requests
+import os
 from fastapi.responses import HTMLResponse
 from supabase_client import supabase
 import json
@@ -5,9 +7,38 @@ from pathlib import Path
 from datetime import datetime
 from fastapi import FastAPI
 from pydantic import BaseModel
-import requests
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+def ia_real(mensaje):
+    url = "https://api.groq.com/openai/v1/chat/completions"
 
-TAVILY_API_KEY = "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"
+    headers = {
+        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "model": "llama3-8b-8192",
+        "messages": [
+            {
+                "role": "system",
+                "content": "Eres Ámatis IA, una asistente inteligente, directa, clara, estratégica y útil. Respondes en español."
+            },
+            {
+                "role": "user",
+                "content": mensaje
+            }
+        ]
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+    respuesta = response.json()
+
+    if "choices" in respuesta:
+    return respuesta["choices"][0]["message"]["content"]
+else:
+    return "Error al obtener respuesta de la IA"
+
+TAVILY_API_KEY = os.getenv ("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")
 def buscar_en_internet(query):
     url = "https://api.tavily.com/search"
 
@@ -201,8 +232,17 @@ def home():
 
 @app.post("/chat")
 def chat(request: ChatRequest):
-    info_internet = buscar_en_internet(request.message)
+    respuesta_ia = ia_real(request.message)
 
+    supabase.table("Memory").insert({
+        "user": request.user,
+        "message": request.message,
+        "response": respuesta_ia
+    }).execute()
+
+    return {
+        "respuesta": respuesta_ia
+}
     supabase.table("Memory").insert({
         "user": request.user,
         "content": request.message
