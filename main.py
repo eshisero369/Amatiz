@@ -197,8 +197,6 @@ def home():
 
 @app.post("/chat")
 def chat(request: ChatRequest):
-@app.post("/chat")
-def chat(request: ChatRequest):
 
     # 1. Buscar en internet
     info_internet = buscar_en_internet(request.message)
