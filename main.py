@@ -53,7 +53,7 @@ try:
 
         respuesta = response.json()
 
-if "choices" in respuesta:
+    if "choices" in respuesta:
     texto = respuesta["choices"][0]["message"]["content"]
 
     supabase.table("chat_history").insert({
