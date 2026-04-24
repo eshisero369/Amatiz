@@ -9,6 +9,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 def ia_real(mensaje):
+def ia_real(mensaje):
     url = "https://api.groq.com/openai/v1/chat/completions"
 
     headers = {
@@ -19,25 +20,26 @@ def ia_real(mensaje):
     data = {
         "model": "llama3-8b-8192",
         "messages": [
-            {
-                "role": "system",
-                "content": "Eres Ámatis IA, una asistente inteligente, directa, clara, estratégica y útil. Respondes en español."
-            },
-            {
-                "role": "user",
-                "content": mensaje
-            }
+            {"role": "system", "content": "Eres Ámatis IA"},
+            {"role": "user", "content": mensaje}
         ]
     }
 
-    response = requests.post(url, headers=headers, json=data)
-    respuesta = response.json()
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        print("STATUS:", response.status_code)
+        print("RESPUESTA RAW:", response.text)
 
-    if "choices" in respuesta:
-        return respuesta["choices"][0]["message"]["content"]
-    else:
-        return "Error al obtener respuesta de la IA"
+        respuesta = response.json()
 
+        if "choices" in respuesta:
+            return respuesta["choices"][0]["message"]["content"]
+        else:
+            return f"Error IA: {respuesta}"
+
+    except Exception as e:
+        return f"Error técnico: {str(e)}"
+        
 TAVILY_API_KEY = os.getenv ("TAVILY_API_KEY")
 def buscar_en_internet(query):
     url = "https://api.tavily.com/search"
