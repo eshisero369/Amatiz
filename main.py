@@ -64,7 +64,7 @@ try:
 
     return texto
 
-else:
+ else:
         return f"Error IA: {respuesta}"
             
   except Exception as e:
