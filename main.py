@@ -36,7 +36,7 @@ historial = response.data
 messages = [
     {
         "role": "system",
-        "content": "Eres Ámatis IA, experto en negocios, ventas e inmobiliaria."
+        "content": "Eres Ámatis IA, experto en negocios, ventas, en datos físicos y científicos."
     }
 ] + historial
 
@@ -46,7 +46,7 @@ data = {
 }
 
 
-    try:
+try:
         response = requests.post(url, headers=headers, json=data)
         print("STATUS:", response.status_code)
         print("RESPUESTA RAW:", response.text)
