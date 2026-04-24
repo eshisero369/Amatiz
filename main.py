@@ -5,7 +5,35 @@ from pathlib import Path
 from datetime import datetime
 from fastapi import FastAPI
 from pydantic import BaseModel
+import requests
 
+TAVILY_API_KEY = "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"
+def buscar_en_internet(query):
+    url = "https://api.tavily.com/search"
+
+    payload = {
+        "api_key": TAVILY_API_KEY,
+        "query": query,
+        "search_depth": "basic",
+        "max_results": 3
+    }
+
+    try:
+        response = requests.post(url, json=payload)
+        data = response.json()
+
+        resultados = ""
+        for r in data.get("results", []):
+            resultados += f"- {r.get('title')}: {r.get('content')}\n\n"
+
+        if resultados == "":
+            return "No encontré información en internet."
+
+        return resultados
+
+    except Exception:
+        return "No pude buscar en internet en este momento."
+        
 app = FastAPI(title="Ámatis IA")
 
 CONFIG_PATH = Path("amatis_config.json")
@@ -169,7 +197,34 @@ def home():
 
 @app.post("/chat")
 def chat(request: ChatRequest):
+@app.post("/chat")
+def chat(request: ChatRequest):
 
+    # 1. Buscar en internet
+    info_internet = buscar_en_internet(request.message)
+
+    # 2. Crear respuesta inteligente
+    respuesta = f"""
+🧠 Respuesta:
+
+Basado en internet:
+
+{info_internet}
+
+Conclusión:
+Te doy una respuesta clara y útil basada en lo encontrado.
+"""
+
+    # 3. Guardar en memoria (opcional)
+    supabase.table("Memory").insert({
+        "user": request.user,
+        "content": request.message
+    }).execute()
+
+    # 4. DEVOLVER RESPUESTA (esto es lo más importante)
+    return {
+        "respuesta": respuesta
+    }
     supabase.table("Memory").insert({
         "user": request.user,
         "content": request.message
