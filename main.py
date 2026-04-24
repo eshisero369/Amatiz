@@ -8,7 +8,7 @@ from datetime import datetime
 from fastapi import FastAPI
 from pydantic import BaseModel
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-def ia_real(mensaje):
+
 def ia_real(mensaje):
     url = "https://api.groq.com/openai/v1/chat/completions"
 
