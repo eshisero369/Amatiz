@@ -91,9 +91,9 @@ def home():
 @app.post("/chat")
 def chat(request: ChatRequest):
 
-supabase.table("Memory").insert({
-    "user": request.user,
-    "content": request.message
+    supabase.table("Memory").insert({
+        "user": request.user,
+        "content": request.message
 }).execute()
 
     config = load_config()
