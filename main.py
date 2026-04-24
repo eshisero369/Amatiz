@@ -204,7 +204,7 @@ def chat(request: ChatRequest):
         "content": request.message
     }).execute()
 
-return {
+   return {
     "respuesta": f"""
 🧠 Respuesta:
 
