@@ -204,15 +204,23 @@ def chat(request: ChatRequest):
         "content": request.message
     }).execute()
 
-    return {
-        "respuesta": f"""
+    
+        return {
+    "respuesta": f"""
 🧠 Respuesta:
 
-Basado en internet:
+Analizando tu mensaje:
+"{request.message}"
 
+Respuesta estratégica:
+Entiendo que estás diciendo: "{request.message}". 
+Voy a darte una respuesta clara y útil basada en el contexto.
+
+Basado en internet:
 {info_internet}
 
 Conclusión:
-Te doy una respuesta clara y útil basada en lo encontrado.
+Si quieres, dame más detalles y te doy una respuesta más precisa.
 """
 }
+
