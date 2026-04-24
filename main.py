@@ -187,8 +187,9 @@ def home():
                 body: JSON.stringify({message: message, user: 'Carlos Iván'})
             });
             const data = await r.json();
-            document.getElementById('res').textContent = JSON.stringify(data, null, 2);
-        }
+
+            document.getElementById('res').textContent = data.respuesta;
+     }
         </script>
     </body>
     </html>
