@@ -52,6 +52,65 @@ def should_remember(text: str):
 
 
 def create_response(user_message: str, config, memory):
+    mensaje = user_message.lower()
+
+    # 🧠 Memoria reciente
+    recuerdos = ""
+    if memory["memories"]:
+        ultimos = memory["memories"][-3:]
+        recuerdos = "Recuerdo reciente: " + "; ".join([m["content"] for m in ultimos])
+
+    # 🎯 Respuestas inteligentes por contexto
+    if "hola" in mensaje:
+        return f"Hola. Soy Ámatis. {recuerdos} ¿Qué necesitas resolver?"
+
+    elif "negocio" in mensaje or "dinero" in mensaje:
+        return f"""
+Análisis rápido:
+
+1. Revisa ingresos vs gastos
+2. Identifica dónde estás perdiendo dinero
+3. Mejora ventas o reduce costos
+
+{recuerdos}
+
+Acción: dime tu situación exacta y te doy un plan.
+"""
+
+    elif "idea" in mensaje:
+        return f"""
+Las ideas no valen nada sin ejecución.
+
+Paso 1: valida si alguien pagaría por eso  
+Paso 2: prueba rápido  
+Paso 3: ajusta según resultados  
+
+{recuerdos}
+"""
+
+    elif "problema" in mensaje:
+        return f"""
+Todo problema se resuelve así:
+
+1. Define el problema real  
+2. Elimina lo irrelevante  
+3. Ejecuta una solución simple  
+
+{recuerdos}
+"""
+
+    else:
+        return f"""
+Estoy analizando tu mensaje:
+
+"{user_message}"
+
+{recuerdos}
+
+No voy a darte una respuesta genérica.
+
+Explícame mejor el contexto y te doy una respuesta más precisa.
+"""
     ia_name = config.get("ia_name", "Ámatis")
     identity = config.get(
         "identity_phrase",
