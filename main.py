@@ -47,9 +47,9 @@ def ia_real(user_id, mensaje):
 
 
     try:
-        response = requests.post(url, headers=headers, json=data)
+            response = requests.post(url, headers=headers, json=data)
 
-        respuesta = response.json()
+            respuesta = response.json()
 
             if "choices" in respuesta:
             texto = respuesta["choices"][0]["message"]["content"]
