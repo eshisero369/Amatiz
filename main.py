@@ -10,8 +10,7 @@ from pydantic import BaseModel
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 def ia_real(user_id, mensaje):
-    url = 
-    "https://api.groq.com/openai/v1/chat/completions"
+    url = "https://api.groq.com/openai/v1/chat/completions"
 
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
