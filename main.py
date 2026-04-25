@@ -67,7 +67,7 @@ try:
      else:
         return f"Error IA: {respuesta}"
             
-  except Exception as e:
+       except Exception as e:
         return f"Error técnico: {str(e)}"
         
 TAVILY_API_KEY = os.getenv ("TAVILY_API_KEY")
