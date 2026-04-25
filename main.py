@@ -47,28 +47,26 @@ data = {
 
 
 try:
-        response = requests.post(url, headers=headers, json=data)
-        print("STATUS:", response.status_code)
-        print("RESPUESTA RAW:", response.text)
+    response = requests.post(url, headers=headers, json=data)
 
-        respuesta = response.json()
+    respuesta = response.json()
 
     if "choices" in respuesta:
-    texto = respuesta["choices"][0]["message"]["content"]
+        texto = respuesta["choices"][0]["message"]["content"]
 
-    supabase.table("chat_history").insert({
-        "user_id": user_id,
-        "role": "assistant",
-        "content": texto
-    }).execute()
+        supabase.table("chat_history").insert({
+            "user_id": user_id,
+            "role": "assistant",
+            "content": texto
+        }).execute()
 
         return texto
 
-     else:
+    else:
         return f"Error IA: {respuesta}"
-            
-       except Exception as e:
-        return f"Error técnico: {str(e)}"
+
+except Exception as e:
+    return f"Error técnico: {str(e)}"
         
 TAVILY_API_KEY = os.getenv ("TAVILY_API_KEY")
 def buscar_en_internet(query):
