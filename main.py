@@ -18,41 +18,41 @@ def ia_real(user_id, mensaje):
         "Content-Type": "application/json"
     }
 
-supabase.table("chat_history").insert({
+    supabase.table("chat_history").insert({
     "user_id": user_id,
     "role": "user",
     "content": mensaje
 }).execute()
 
     # Obtener historial desde Supabase
-response = supabase.table("chat_history") \
+    response = supabase.table("chat_history") \
     .select("role, content") \
     .eq("user_id", user_id) \
     .order("created_at") \
     .execute()
 
-historial = response.data
+    historial = response.data
 
-# Armar mensajes con memoria
-messages = [
+    # Armar mensajes con memoria
+    messages = [
     {
         "role": "system",
         "content": "Eres Ámatis IA, experto en negocios, ventas, en datos físicos y científicos."
     }
 ] + historial
 
-data = {
+    data = {
     "model": "llama-3.1-8b-instant",
     "messages": messages
 }
 
 
-try:
+    try:
     response = requests.post(url, headers=headers, json=data)
 
     respuesta = response.json()
 
-    if "choices" in respuesta:
+        if "choices" in respuesta:
         texto = respuesta["choices"][0]["message"]["content"]
 
         supabase.table("chat_history").insert({
@@ -61,13 +61,13 @@ try:
             "content": texto
         }).execute()
 
-        return texto
+            return texto
 
-    else:
-        return f"Error IA: {respuesta}"
+        else:
+            return f"Error IA: {respuesta}"
 
-except Exception as e:
-    return f"Error técnico: {str(e)}"
+    except Exception as e:
+        return f"Error técnico: {str(e)}"
         
 TAVILY_API_KEY = os.getenv ("TAVILY_API_KEY")
 def buscar_en_internet(query):
